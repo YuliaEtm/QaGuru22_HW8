@@ -49,8 +49,19 @@ class Cart:
         Метод добавления продукта в корзину.
         Если продукт уже есть в корзине, то увеличиваем количество
         """
-
-        raise NotImplementedError
+        if buy_count > 0:
+            if product not in self.products:
+                if product.check_quantity(buy_count):
+                    self.products[product] = buy_count
+                else:
+                    raise ValueError(f"Извините, у нас недостаточно этого продукта")
+            else:
+                if product.check_quantity(self.products[product]+buy_count):
+                    self.products[product] += buy_count
+                else:
+                    raise ValueError(f"Извините, у нас недостаточно этого продукта")
+        else:
+            raise ValueError(f" неверное количество 0")
 
     def remove_product(self, product: Product, remove_count=None):
         """
@@ -58,7 +69,16 @@ class Cart:
         Если remove_count не передан, то удаляется вся позиция
         Если remove_count больше, чем количество продуктов в позиции, то удаляется вся позиция
         """
-        raise NotImplementedError
+        if self.products.get(product):
+            if not remove_count:
+                self.products.pop(product)
+            elif remove_count > self.products[product]:
+                self.products.pop(product)
+            else:
+                self.products[product] -= remove_count
+        else:
+            raise ValueError("продукта нет в корзине")
+
 
     def clear(self):
         raise NotImplementedError
