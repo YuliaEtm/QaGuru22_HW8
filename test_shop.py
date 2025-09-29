@@ -145,8 +145,6 @@ class TestCart:
 
         assert total_price == product_book.price * buy_count_book + product_pen.price * buy_count_pen
 
-    #  на один продукт написать
-
     def test_total_prise_empty_cart(self, cart):
         # проверка стоимости пустой корзины
         total_price = cart.get_total_price()
