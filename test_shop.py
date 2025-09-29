@@ -14,6 +14,7 @@ def product_book() -> Product:
 def product_pen() -> Product:
     return Product("pen", 1, "This is a pen", 2000)
 
+
 class TestProducts:
     """
     Тестовый класс - это способ группировки ваших тестов по какой-то тематике
@@ -108,3 +109,63 @@ class TestCart:
             cart.add_product(product_book, 100)
 
             cart.remove_product(product_pen, 2)
+
+    def test_clear_cart(self, cart, product_book, product_pen):
+        cart.add_product(product_book, 100)
+        cart.add_product(product_pen, 10)
+
+        cart.clear()
+
+        assert cart.products == {}
+
+    def test_clear_empty_cart(self, cart):
+        cart.clear()
+        assert cart.products == {}
+
+    def test_clear_cart0(self, cart, product_book, product_pen):
+        with pytest.raises(ValueError):
+            cart.add_product(product_book, 0)
+
+        cart.clear()
+
+        assert cart.products == {}
+
+    def test_total_prise(self, cart, product_book, product_pen):
+        cart.add_product(product_book, 100)
+        cart.add_product(product_pen, 10)
+        total_price = cart.get_total_price()
+        assert total_price == product_book.price*100 + product_pen.price*10
+#  на один продукт написать
+
+    def test_total_prise_empty_cart(self, cart):
+        total_price = cart.get_total_price()
+        assert total_price == 0
+
+    def test_buy_product(self, cart, product_book):
+        count_book = product_book.quantity
+        buy_count_book = 100
+        cart.add_product(product_book, buy_count_book)
+        cart.buy()
+        assert product_book.quantity == count_book - buy_count_book
+        assert cart.products == {}
+
+    def test_buy_two_product(self, cart, product_book, product_pen):
+        count_book = product_book.quantity
+        buy_count_book = 10
+        count_pen = product_pen.quantity
+        buy_count_pen = 5
+        cart.add_product(product_book, buy_count_book)
+        cart.add_product(product_pen, buy_count_pen)
+
+        cart.buy()
+
+        assert product_book.quantity == count_book - buy_count_book
+        assert product_pen.quantity == count_pen - buy_count_pen
+        assert cart.products == {}
+
+    # def test_buy_many_product(self, cart, product_book):
+    #
+    #     cart.add_product(product_book, product_book.quantity+1)
+    #     with pytest.raises(ValueError):
+    #         cart.buy() и 0 продукта
+
