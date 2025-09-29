@@ -14,10 +14,10 @@ class Product:
         self.quantity = quantity
 
     def check_quantity(self, user_quantity) -> bool:
-        # """
-        # TODO Верните True если количество продукта больше или равно запрашиваемому
-        #     и False в обратном случае
-        # """
+        """
+         Верните True если количество продукта больше или равно запрашиваемому
+         и False в обратном случае
+        """
         return self.quantity >= user_quantity
 
     def buy(self, user_quantity):
@@ -34,7 +34,6 @@ class Product:
 class Cart:
     """
     Класс корзины. В нем хранятся продукты, которые пользователь хочет купить.
-    TODO реализуйте все методы класса
     """
 
     # Словарь продуктов и их количество в корзине
@@ -56,7 +55,7 @@ class Cart:
                 else:
                     raise ValueError(f"Извините, у нас недостаточно этого продукта")
             else:
-                if product.check_quantity(self.products[product]+buy_count):
+                if product.check_quantity(self.products[product] + buy_count):
                     self.products[product] += buy_count
                 else:
                     raise ValueError(f"Извините, у нас недостаточно этого продукта")
@@ -80,15 +79,21 @@ class Cart:
             raise ValueError("продукта нет в корзине")
 
     def clear(self):
-        self.products ={}
+        """
+        Метод покупки.
+        Очищает корзину
+        """
+        self.products = {}
 
     def get_total_price(self):
+        """
+        Метод покупки.
+        Подсчитывает общую стоимость корзины
+        """
         total_price = 0
         for key in self.products.keys():
-            total_price += key.price*self.products.get(key)
+            total_price += key.price * self.products.get(key)
         return total_price
-
-
 
     def buy(self):
         """
@@ -100,9 +105,4 @@ class Cart:
         for product in self.products.keys():
             product.buy(self.products.get(product))
 
-           # key.quantity = key.quantity - self.products.get(key)
-
         self.clear()
-
-
-
