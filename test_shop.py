@@ -103,6 +103,15 @@ class TestCart:
 
         assert cart.products == {}
 
+    def test_remove_fill_quantity(self, cart, product_book):
+        # удаление из корзины продукта всего количества на складе
+        start_product_book_quantity = product_book.quantity
+        cart.add_product(product_book, start_product_book_quantity)
+
+        cart.remove_product(product_book, start_product_book_quantity)
+
+        assert product_book.quantity == 1000
+
     def test_remove_product_multi(self, cart, product_book, product_pen):
         # удаление из корзины с несколькими продуктами части одного продукта
         cart.add_product(product_book, 100)
@@ -175,3 +184,10 @@ class TestCart:
         assert product_book.quantity == count_book - buy_count_book
         assert product_pen.quantity == count_pen - buy_count_pen
         assert cart.products == {}
+
+    def test_buy_with_error(self, cart, product_book):
+
+        with pytest.raises(ValueError):
+            cart.add_product(product_book, 1010)
+            cart.buy()
+
